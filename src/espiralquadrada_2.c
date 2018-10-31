@@ -3,9 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool isPerfectSquare(int i);
 int getNearestPerfectSquare(int num);
 void calculateCoords(int n);
+void calculatePsCoords(int ps, int* x, int* y);
+int calculateDistanceFromNToPerfectSquare(int n, int nearestPs);
+char determineMovementAxis(int n, int nearestPs);
+int determineMovementSign(int nearestPs);
+void applyOffSet(int sizeOfMovement, char movementAxis, int movementSign, int* x, int* y);
 void printCoords(int x, int y);
 
 int main() {
@@ -16,46 +20,14 @@ int main() {
 }
 
 void calculateCoords(int n) {
-    int x, y;
-    bool isPs = isPerfectSquare(n);
-    if (!isPs) {
-        int nearestPs = getNearestPerfectSquare(n);
-        if (nearestPs % 2 == 0) {  // even ps
-            x = sqrt(nearestPs) / 2 * -1;
-            y = sqrt(nearestPs) / 2 * -1;
-        } else {  // odd ps
-            x = floor(sqrt(nearestPs) / 2);
-            y = ceil(sqrt(nearestPs) / 2);
-        }
-        if ((int)sqrt(nearestPs) % 2 == 0) {  // root of nearestPs is even
-            if (n > nearestPs) {              // y is equal
-                x = x + abs(n - nearestPs);
-            } else if (n < nearestPs) {  // x is equal
-                y = y + abs(n - nearestPs);
-            }
-        } else {                  // number is odd
-            if (n > nearestPs) {  // y is equal
-                x = x - abs(n - nearestPs);
-            } else if (n < nearestPs) {  // x is equal
-                y = y - abs(n - nearestPs);
-            }
-        }
-    } else {                          // is Ps
-        if ((int)sqrt(n) % 2 == 0) {  // even ps
-            x = sqrt(n) / 2 * -1;
-            y = sqrt(n) / 2 * -1;
-        } else {  // odd ps
-            x = floor(sqrt(n) / 2);
-            y = ceil(sqrt(n) / 2);
-        }
-    }
+    int x=0, y=0;
+	int nearestPs = getNearestPerfectSquare(n);
+	calculatePsCoords(nearestPs, &x, &y);
+	int distOfNToPerfectSquare = calculateDistanceFromNToPerfectSquare(n, nearestPs);
+	char movementAxis = determineMovementAxis(n, nearestPs);
+	int movementSign = determineMovementSign(nearestPs);
+	applyOffSet(distOfNToPerfectSquare, movementAxis, movementSign, &x, &y);
     printCoords(x, y);
-}
-
-bool isPerfectSquare(int i) {
-    float root = sqrt(i);
-    int intRoot = root;
-    return intRoot == root;
 }
 
 int getNearestPerfectSquare(int num) {
@@ -70,4 +42,41 @@ int getNearestPerfectSquare(int num) {
     return pow(val, 2);
 }
 
+void calculatePsCoords(int ps, int* x, int* y) {
+	if (ps % 2 == 0) {  // even ps
+        *x = sqrt(ps) / 2 * -1;
+        *y = sqrt(ps) / 2 * -1;
+    } else {  // odd ps
+        *x = floor(sqrt(ps) / 2);
+        *y = ceil(sqrt(ps) / 2);
+    }
+}
+
+int calculateDistanceFromNToPerfectSquare(int n, int nearestPs) {
+	return abs(n - nearestPs);
+}
+
+char determineMovementAxis(int n, int nearestPs) {
+	return n > nearestPs ? 'X' : 'Y';
+}
+
+int determineMovementSign(int nearestPs) {
+	int movementSign = 0;
+	if ((int)sqrt(nearestPs) % 2 == 0) {
+		movementSign = 1; // positive;
+	} else {
+		movementSign = -1; // negative
+	}
+	return movementSign;
+}
+
+void applyOffSet(int sizeOfMovement, char movementAxis, int movementSign, int* x, int* y) {
+	if (movementAxis == 'X') {
+		*x = *x + (sizeOfMovement * movementSign);
+	} else {
+		*y = *y + (sizeOfMovement * movementSign);
+	}
+}
+
 void printCoords(int x, int y) { printf("(%d, %d)\n", x, y); }
+
