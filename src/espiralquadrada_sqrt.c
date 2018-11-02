@@ -21,12 +21,12 @@ int main() {
 
 void calculateCoords(int n) {
     int x=0, y=0;
-	int nearestPs = getNearestPerfectSquare(n);
-	calculatePsCoords(nearestPs, &x, &y);
-	int distOfNToPerfectSquare = calculateDistanceFromNToPerfectSquare(n, nearestPs);
-	char movementAxis = determineMovementAxis(n, nearestPs);
-	int movementSign = determineMovementSign(nearestPs);
-	applyOffSet(distOfNToPerfectSquare, movementAxis, movementSign, &x, &y);
+    int nearestPs = getNearestPerfectSquare(n);
+    calculatePsCoords(nearestPs, &x, &y);
+    int distOfNToPerfectSquare = calculateDistanceFromNToPerfectSquare(n, nearestPs);
+    char movementAxis = determineMovementAxis(n, nearestPs);
+    int movementSign = determineMovementSign(nearestPs);
+    applyOffSet(distOfNToPerfectSquare, movementAxis, movementSign, &x, &y);
     printCoords(&x, &y);
 }
 
