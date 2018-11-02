@@ -10,7 +10,7 @@ int calculateDistanceFromNToPerfectSquare(int n, int nearestPs);
 char determineMovementAxis(int n, int nearestPs);
 int determineMovementSign(int nearestPs);
 void applyOffSet(int sizeOfMovement, char movementAxis, int movementSign, int* x, int* y);
-void printCoords(int x, int y);
+void printCoords(int* x, int* y);
 
 int main() {
     int n;
@@ -27,7 +27,7 @@ void calculateCoords(int n) {
 	char movementAxis = determineMovementAxis(n, nearestPs);
 	int movementSign = determineMovementSign(nearestPs);
 	applyOffSet(distOfNToPerfectSquare, movementAxis, movementSign, &x, &y);
-    printCoords(x, y);
+    printCoords(&x, &y);
 }
 
 int getNearestPerfectSquare(int num) {
@@ -43,10 +43,10 @@ int getNearestPerfectSquare(int num) {
 }
 
 void calculatePsCoords(int ps, int* x, int* y) {
-	if (ps % 2 == 0) {  // even ps
+	if (ps % 2 == 0) {
         *x = sqrt(ps) / 2 * -1;
         *y = sqrt(ps) / 2 * -1;
-    } else {  // odd ps
+    } else {
         *x = floor(sqrt(ps) / 2);
         *y = ceil(sqrt(ps) / 2);
     }
@@ -63,9 +63,9 @@ char determineMovementAxis(int n, int nearestPs) {
 int determineMovementSign(int nearestPs) {
 	int movementSign = 0;
 	if ((int)sqrt(nearestPs) % 2 == 0) {
-		movementSign = 1; // positive;
+		movementSign = 1;
 	} else {
-		movementSign = -1; // negative
+		movementSign = -1;
 	}
 	return movementSign;
 }
@@ -78,5 +78,6 @@ void applyOffSet(int sizeOfMovement, char movementAxis, int movementSign, int* x
 	}
 }
 
-void printCoords(int x, int y) { printf("(%d, %d)\n", x, y); }
-
+void printCoords(int* x, int *y) {
+    printf("(%d, %d)\n", *x, *y);
+}
